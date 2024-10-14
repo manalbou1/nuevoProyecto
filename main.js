@@ -30,13 +30,17 @@ const questions = [
 // Inicializar el índice de la pregunta actual
 let currentQuestionIndex = 0;
 
+// Crear la lista de respuestas inicialmente
+const ul = document.createElement("ul");
+ul.classList.add("container-answers");
+div.appendChild(ul);
+
 // Función para actualizar las preguntas y respuestas
 function updateQuestion() {
   // Actualizar el texto de la pregunta
   p.textContent = questions[currentQuestionIndex];
 
   // Actualizar las opciones de respuesta
-  const ul = document.querySelector("ul");
   ul.innerHTML = ""; // Limpiar las respuestas anteriores
   for (let i = 0; i < respuesta[currentQuestionIndex].length; i++) {
     const li = document.createElement("li");
@@ -45,6 +49,11 @@ function updateQuestion() {
     button.textContent = respuesta[currentQuestionIndex][i];
     li.appendChild(button);
     ul.appendChild(li);
+
+    // Añadir un evento a cada botón de respuesta (puedes personalizarlo según tus necesidades)
+    button.addEventListener("click", function() {
+      console.log("Respuesta seleccionada:", button.textContent);
+    });
   }
 
   // Habilitar/deshabilitar botones según el índice de la pregunta
@@ -52,19 +61,7 @@ function updateQuestion() {
   button2.disabled = currentQuestionIndex === questions.length - 1; // Deshabilitar "Next" en la última pregunta
 }
 
-// Crear la lista de respuestas inicialmente
-const ul = document.createElement("ul");
-ul.classList.add("container-answers");
-for (let i = 0; i < respuesta[currentQuestionIndex].length; i++) {
-  const li = document.createElement("li");
-  const button = document.createElement("button");
-  button.classList.add("answer-btn");
-  button.textContent = respuesta[currentQuestionIndex][i];
-  li.appendChild(button);
-  ul.appendChild(li);
-}
-div.appendChild(ul);
-
+// Crear botones "Previous" y "Next"
 const div2 = document.createElement("div");
 div2.classList.add("container-footer");
 
@@ -73,11 +70,17 @@ button1.textContent = "Previous";
 button1.disabled = true; // Deshabilitar "Previous" en la primera pregunta
 button1.classList.add("footer-btn");
 
+// Botón "Next"
+const button2 = document.createElement("button");
+button2.classList.add("footer-btn");
+button2.textContent = "Next";
+
 // Si es la primera vez que se entra, deshabilitar "Next"
 if (!localStorage.getItem("firstVisit")) {
   button2.disabled = true;
 }
 
+// Añadir eventos a los botones
 button1.addEventListener("click", function () {
   // Retroceder a la pregunta anterior
   if (currentQuestionIndex > 0) {
@@ -86,11 +89,8 @@ button1.addEventListener("click", function () {
   }
 });
 
-const button2 = document.createElement("button");
-button2.classList.add("footer-btn");
-button2.textContent = "Next";
 button2.addEventListener("click", function () {
-  // Guardamos en el localStorage que el usuario ya ha visitado la app
+  // Guardar en localStorage que el usuario ya ha visitado la app
   localStorage.setItem("firstVisit", "true");
 
   // Avanzar a la siguiente pregunta
@@ -99,12 +99,17 @@ button2.addEventListener("click", function () {
     updateQuestion();
   }
 
-  // Habilitamos el botón Previous cuando avanzamos
+  // Habilitar el botón Previous cuando avanzamos
   button1.disabled = false;
 });
 
+// Agregar los botones a la interfaz
 div2.appendChild(button1);
 div2.appendChild(button2);
 div.appendChild(div2);
 
+// Insertar el contenedor en el body
 body.appendChild(div);
+
+// Inicializar la primera pregunta
+updateQuestion();

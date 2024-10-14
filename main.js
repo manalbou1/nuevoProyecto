@@ -14,8 +14,8 @@ div.appendChild(p);
 
 const respuesta = [
   ["London", "Berlin", "Paris", "Madrid"],
-  ["Nile", "Amazon", "Yangtze", "Mississippi"],
-  ["Shakespeare", "Hemingway", "Dante", "Tolstoy"],
+  ["Amazonas","Nilo",  "Yangtse", "Miño"],
+  ["Jane Austen","Cervantes","Charles Dickens","William Shakespeare"],
   ["7", "8", "9", "10"]
 ];
 

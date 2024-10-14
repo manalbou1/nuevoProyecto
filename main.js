@@ -75,10 +75,7 @@ const button2 = document.createElement("button");
 button2.classList.add("footer-btn");
 button2.textContent = "Next";
 
-// Si es la primera vez que se entra, deshabilitar "Next"
-if (!localStorage.getItem("firstVisit")) {
-  button2.disabled = true;
-}
+
 
 // Añadir eventos a los botones
 button1.addEventListener("click", function () {

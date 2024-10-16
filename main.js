@@ -9,22 +9,26 @@ h2.textContent = "Quiz Question?";
 div.appendChild(h2);
 
 const p = document.createElement("p");
-p.textContent = "What is the capital of France?";
 div.appendChild(p);
 
-const respuesta = [
-  ["London", "Berlin", "Paris", "Madrid"],
-  ["Amazonas","Nilo",  "Yangtse", "Miño"],
-  ["Jane Austen","Cervantes","Charles Dickens","William Shakespeare"],
-  ["7", "8", "9", "10"]
-];
-
-// Array de preguntas
-const questions = [
-  "What is the capital of France?",
-  "What is the longest river in the world?",
-  "Who wrote Romeo and Juliet?",
-  "How many planets are there in our solar system?"
+// Array de preguntas y respuestas
+const objeto = [
+  {
+    pregunta: "What is the capital of France?",
+    respuesta: ["London", "Berlin", "Paris", "Madrid"]
+  },
+  {
+    pregunta: "What is the longest river in the world?",
+    respuesta: ["Amazonas", "Nilo", "Yangtse", "Miño"]
+  },
+  {
+    pregunta: "Who wrote Romeo and Juliet?",
+    respuesta: ["Jane Austen", "Cervantes", "Charles Dickens", "William Shakespeare"]
+  },
+  {
+    pregunta: "How many planets are there in our solar system?",
+    respuesta: ["7", "8", "9", "10"]
+  }
 ];
 
 // Inicializar el índice de la pregunta actual
@@ -38,27 +42,22 @@ div.appendChild(ul);
 // Función para actualizar las preguntas y respuestas
 function updateQuestion() {
   // Actualizar el texto de la pregunta
-  p.textContent = questions[currentQuestionIndex];
+  p.textContent = objeto[currentQuestionIndex].pregunta;
 
   // Actualizar las opciones de respuesta
   ul.innerHTML = ""; // Limpiar las respuestas anteriores
-  for (let i = 0; i < respuesta[currentQuestionIndex].length; i++) {
+  objeto[currentQuestionIndex].respuesta.forEach(answer => {
     const li = document.createElement("li");
     const button = document.createElement("button");
     button.classList.add("answer-btn");
-    button.textContent = respuesta[currentQuestionIndex][i];
+    button.textContent = answer;
     li.appendChild(button);
     ul.appendChild(li);
-
-    // Añadir un evento a cada botón de respuesta (puedes personalizarlo según tus necesidades)
-    button.addEventListener("click", function() {
-      console.log("Respuesta seleccionada:", button.textContent);
-    });
-  }
+  });
 
   // Habilitar/deshabilitar botones según el índice de la pregunta
   button1.disabled = currentQuestionIndex === 0; // Deshabilitar "Previous" en la primera pregunta
-  button2.disabled = currentQuestionIndex === questions.length - 1; // Deshabilitar "Next" en la última pregunta
+  button2.disabled = currentQuestionIndex === objeto.length - 1; // Deshabilitar "Next" en la última pregunta
 }
 
 // Crear botones "Previous" y "Next"
@@ -75,8 +74,6 @@ const button2 = document.createElement("button");
 button2.classList.add("footer-btn");
 button2.textContent = "Next";
 
-
-
 // Añadir eventos a los botones
 button1.addEventListener("click", function () {
   // Retroceder a la pregunta anterior
@@ -91,7 +88,7 @@ button2.addEventListener("click", function () {
   localStorage.setItem("firstVisit", "true");
 
   // Avanzar a la siguiente pregunta
-  if (currentQuestionIndex < questions.length - 1) {
+  if (currentQuestionIndex < objeto.length - 1) {
     currentQuestionIndex++;
     updateQuestion();
   }

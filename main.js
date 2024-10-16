@@ -54,7 +54,14 @@ function updateQuestion() {
 
     // Añadir evento click para cambiar el color del botón a verde
     button.addEventListener("click", function () {
-      button.style.backgroundColor = "#3CB371"; // Cambia el color a verde
+      // Desmarcar todas las respuestas
+      const allButtons = ul.querySelectorAll("button");
+      allButtons.forEach(btn => {
+        btn.style.backgroundColor = ""; // Restablecer color de fondo
+      });
+      
+      // Marcar el botón clicado en verde
+      button.style.backgroundColor = "#3CB371"; // Cambiar el color a verde
     });
 
     li.appendChild(button);

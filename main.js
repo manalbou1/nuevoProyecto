@@ -51,6 +51,12 @@ function updateQuestion() {
     const button = document.createElement("button");
     button.classList.add("answer-btn");
     button.textContent = answer;
+
+    // Añadir evento click para cambiar el color del botón a verde
+    button.addEventListener("click", function () {
+      button.style.backgroundColor = "#3CB371"; // Cambia el color a verde
+    });
+
     li.appendChild(button);
     ul.appendChild(li);
   });

@@ -34,6 +34,9 @@ const objeto = [
 // Inicializar el índice de la pregunta actual
 let currentQuestionIndex = 0;
 
+// Array para almacenar las respuestas seleccionadas (inicialmente sin selección)
+let selectedAnswers = new Array(objeto.length).fill(null);
+
 // Crear la lista de respuestas inicialmente
 const ul = document.createElement("ul");
 ul.classList.add("container-answers");
@@ -46,22 +49,30 @@ function updateQuestion() {
 
   // Actualizar las opciones de respuesta
   ul.innerHTML = ""; // Limpiar las respuestas anteriores
-  objeto[currentQuestionIndex].respuesta.forEach(answer => {
+  objeto[currentQuestionIndex].respuesta.forEach((answer, index) => {
     const li = document.createElement("li");
     const button = document.createElement("button");
     button.classList.add("answer-btn");
     button.textContent = answer;
 
-    // Añadir evento click para cambiar el color del botón a verde
+    // Si la respuesta fue seleccionada previamente, se marca en verde
+    if (selectedAnswers[currentQuestionIndex] === index) {
+      button.style.backgroundColor = "#3CB371"; // Mantener en verde la respuesta seleccionada previamente
+    }
+
+    // Añadir evento click para marcar solo una respuesta y guardarla
     button.addEventListener("click", function () {
       // Desmarcar todas las respuestas
       const allButtons = ul.querySelectorAll("button");
       allButtons.forEach(btn => {
         btn.style.backgroundColor = ""; // Restablecer color de fondo
       });
-      
+
       // Marcar el botón clicado en verde
       button.style.backgroundColor = "#3CB371"; // Cambiar el color a verde
+
+      // Guardar la respuesta seleccionada para la pregunta actual
+      selectedAnswers[currentQuestionIndex] = index;
     });
 
     li.appendChild(button);

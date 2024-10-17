@@ -15,19 +15,23 @@ div.appendChild(p);
 const objeto = [
   {
     pregunta: "What is the capital of France?",
-    respuesta: ["London", "Berlin", "Paris", "Madrid"]
+    respuesta: ["London", "Berlin", "Paris", "Madrid"],
+    correcta: 2 // Índice de la respuesta correcta (Paris)
   },
   {
     pregunta: "What is the longest river in the world?",
-    respuesta: ["Amazonas", "Nilo", "Yangtse", "Miño"]
+    respuesta: ["Amazonas", "Nilo", "Yangtse", "Miño"],
+    correcta: 1 // Índice de la respuesta correcta (Nilo)
   },
   {
     pregunta: "Who wrote Romeo and Juliet?",
-    respuesta: ["Jane Austen", "Cervantes", "Charles Dickens", "William Shakespeare"]
+    respuesta: ["Jane Austen", "Cervantes", "Charles Dickens", "William Shakespeare"],
+    correcta: 3 // Índice de la respuesta correcta (William Shakespeare)
   },
   {
     pregunta: "How many planets are there in our solar system?",
-    respuesta: ["7", "8", "9", "10"]
+    respuesta: ["7", "8", "9", "10"],
+    correcta: 2 // Índice de la respuesta correcta (9)
   }
 ];
 
@@ -73,6 +77,11 @@ function updateQuestion() {
 
       // Guardar la respuesta seleccionada para la pregunta actual
       selectedAnswers[currentQuestionIndex] = index;
+
+      // Comprobar si todas las preguntas han sido respondidas para habilitar el botón "Check"
+      if (selectedAnswers.every(answer => answer !== null)) {
+        checkButton.disabled = false; // Habilitar el botón "Check"
+      }
     });
 
     li.appendChild(button);
@@ -84,7 +93,7 @@ function updateQuestion() {
   button2.disabled = currentQuestionIndex === objeto.length - 1; // Deshabilitar "Next" en la última pregunta
 }
 
-// Crear botones "Previous" y "Next"
+// Crear botones "Previous", "Next" y "Check"
 const div2 = document.createElement("div");
 div2.classList.add("container-footer");
 
@@ -98,6 +107,12 @@ const button2 = document.createElement("button");
 button2.classList.add("footer-btn");
 button2.textContent = "Next";
 
+// Botón "Check"
+const checkButton = document.createElement("button");
+checkButton.textContent = "Check";
+checkButton.disabled = true; // Deshabilitar el botón "Check" inicialmente
+checkButton.classList.add("footer-btn");
+
 // Añadir eventos a los botones
 button1.addEventListener("click", function () {
   // Retroceder a la pregunta anterior
@@ -108,9 +123,6 @@ button1.addEventListener("click", function () {
 });
 
 button2.addEventListener("click", function () {
-  // Guardar en localStorage que el usuario ya ha visitado la app
-  localStorage.setItem("firstVisit", "true");
-
   // Avanzar a la siguiente pregunta
   if (currentQuestionIndex < objeto.length - 1) {
     currentQuestionIndex++;
@@ -121,9 +133,25 @@ button2.addEventListener("click", function () {
   button1.disabled = false;
 });
 
+// Evento para el botón "Check" para mostrar los resultados
+checkButton.addEventListener("click", function () {
+  let correctAnswers = 0;
+
+  // Comprobar cuántas respuestas son correctas
+  selectedAnswers.forEach((selectedAnswer, questionIndex) => {
+    if (selectedAnswer === objeto[questionIndex].correcta) {
+      correctAnswers++; // Incrementar si la respuesta es correcta
+    }
+  });
+
+  // Mostrar el resultado en un pop-up
+  alert(`${correctAnswers}  correct answer from ${objeto.length}`);
+});
+
 // Agregar los botones a la interfaz
 div2.appendChild(button1);
 div2.appendChild(button2);
+div2.appendChild(checkButton);
 div.appendChild(div2);
 
 // Insertar el contenedor en el body

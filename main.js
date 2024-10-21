@@ -1,4 +1,4 @@
-import './style.css'
+import './style.css';
 
 const body = document.querySelector("body");
 const div = document.createElement("div");
@@ -31,7 +31,7 @@ const objeto = [
   {
     pregunta: "How many planets are there in our solar system?",
     respuesta: ["7", "8", "9", "10"],
-    correcta: 2 // Índice de la respuesta correcta (9)
+    correcta: 1 // Índice de la respuesta correcta (8)
   }
 ];
 
@@ -133,7 +133,60 @@ button2.addEventListener("click", function () {
   button1.disabled = false;
 });
 
-// Evento para el botón "Check" para mostrar los resultados
+// Función para mostrar el modal
+function showModal(correctAnswers, totalQuestions) {
+  // Crear los elementos del modal
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
+
+  const modalContent = document.createElement("div");
+  modalContent.classList.add("modal-content");
+
+  const closeButton = document.createElement("span");
+  closeButton.classList.add("modal-close");
+  closeButton.innerHTML = "&times;"; // Carácter "×" para el botón de cerrar
+
+  let resultMessage = document.createElement("div"); // Usa un div en lugar de p para contener todo el HTML
+  resultMessage.innerHTML = `<h1>Result</h1><hr><p>You got ${correctAnswers} correct answers out of ${totalQuestions}!</p>`;
+  
+
+  // Añadir elementos al modal
+  modalContent.appendChild(closeButton);
+  modalContent.appendChild(resultMessage);
+  modal.appendChild(modalContent);
+
+  // Insertar el modal en el body
+  body.appendChild(modal);
+
+  // Mostrar el modal (cambiar visibilidad)
+  setTimeout(() => {
+    modal.style.opacity = '1';
+    modal.style.visibility = 'visible';
+  }, 10);
+
+  // Evento para cerrar el modal al hacer clic en la "X"
+  closeButton.addEventListener("click", () => {
+    closeModal(modal);
+  });
+
+  // Evento para cerrar el modal si se hace clic fuera del contenido
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeModal(modal);
+    }
+  });
+}
+
+// Función para cerrar el modal
+function closeModal(modal) {
+  modal.style.opacity = '0';
+  modal.style.visibility = 'hidden';
+  setTimeout(() => {
+    modal.remove(); // Eliminar el modal del DOM después de la transición
+  }, 300);
+}
+
+// Evento para el botón "Check" para mostrar los resultados en el modal
 checkButton.addEventListener("click", function () {
   let correctAnswers = 0;
 
@@ -144,8 +197,8 @@ checkButton.addEventListener("click", function () {
     }
   });
 
-  // Mostrar el resultado en un pop-up
-  alert(`${correctAnswers}  correct answer from ${objeto.length}`);
+  // Mostrar el modal con los resultados
+  showModal(correctAnswers, objeto.length);
 });
 
 // Agregar los botones a la interfaz
